@@ -1,29 +1,28 @@
-package br.com.diego;
-
+import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
+import org.apache.kafka.common.serialization.StringDeserializer;
 
 import java.util.Map;
+import java.util.regex.Pattern;
 
-public class EmailService {
+public class LogService {
     public static void main(String[] args) throws InterruptedException {
-        var emailService = new EmailService();
+        var logService = new LogService();
         try (var service = new KafkaService(EmailService.class.getSimpleName(),
-                "ECOMMERCE_SEND_EMAIL",
-                emailService::parse,
+                Pattern.compile("ECOMMERCE.*"),
+                logService::parse,
                 String.class,
-                Map.of())) {
+                Map.of(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName()))) {
             service.run();
         }
     }
 
-    public void parse(ConsumerRecord<String, String> record) throws InterruptedException {
+    private void parse(ConsumerRecord<String, String> record) {
         System.out.println("===================================================");
-        System.out.println("Sending email");
+        System.out.println("LOG" + record.topic());
         System.out.println(record.key());
         System.out.println(record.value());
         System.out.println(record.partition());
         System.out.println(record.offset());
-        Thread.sleep(1000);
-        System.out.println("Email sent");
     }
 }

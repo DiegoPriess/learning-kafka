@@ -1,5 +1,3 @@
-package br.com.diego;
-
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 
 import java.util.Map;

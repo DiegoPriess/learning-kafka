@@ -1,5 +1,3 @@
-package br.com.diego;
-
 import java.math.BigDecimal;
 
 public class Order {
