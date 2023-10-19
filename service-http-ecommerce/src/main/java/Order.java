@@ -12,4 +12,3 @@ public class Order {
         this.email = email;
     }
 }
-
